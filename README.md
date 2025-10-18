@@ -15,3 +15,8 @@ _Степанов Ярослав_
 
 [README.md](./myUART/README.md)
 [Папка myUART](./myUART/)
+
+## LedPhotoSerialMQTT
+
+[README.md](./LedPhotoSerialMQTT/README.md)
+[Папка LedPhotoSerialMQTT](./LedPhotoSerialMQTT/)
