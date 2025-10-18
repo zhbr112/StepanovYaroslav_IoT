@@ -8,11 +8,11 @@
 
 ```
 [Sensor MCU] <--UART--> [PC1: Python + MQTT Publisher]
-                                                            |
-                                                            v
-                                                        [MQTT Broker]----> [Monitor]
-                                                            |
-                                                            v
+                              |
+                              v
+                         [MQTT Broker]----> [Monitor]
+                              |
+                              v
 [Actuator MCU] <--UART--> [PC2: Python + MQTT Subscriber]
 ```
 
