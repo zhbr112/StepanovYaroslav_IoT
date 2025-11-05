@@ -20,3 +20,8 @@ _Степанов Ярослав_
 
 [README.md](./LedPhotoSerialMQTT/README.md)
 [Папка LedPhotoSerialMQTT](./LedPhotoSerialMQTT/)
+
+## ShiftRegistrersTimers
+
+[README.md](./ShiftRegistrersTimers/README.md)
+[Папка ShiftRegistrersTimers](./ShiftRegistrersTimers/)
