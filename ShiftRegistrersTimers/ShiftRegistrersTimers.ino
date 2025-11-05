@@ -117,39 +117,38 @@ ISR(TIMER1_COMPA_vect) {
 }
 
 void loop() {
-  static char inputBuffer[4]; // Буфер для входящих символов (2 цифры + \n + \0)
-  static byte bufferIndex = 0; // Текущая позиция в буфере
+  // Статические переменные для хранения состояния между вызовами loop()
+  static char inputBuffer[4];
+  static byte bufferIndex = 0;
+  static unsigned long lastCharTime = 0; // Время получения последнего символа
+  const unsigned long timeout = 25;      // Таймаут в миллисекундах
 
-  // Пока есть данные в порту, читаем их по одному символу
-  while (Serial.available() > 0) {
+  // Чтение данных, если они есть
+  if (Serial.available() > 0) {
     char incomingChar = Serial.read();
 
-    // Если получен символ новой строки, значит, пользователь закончил ввод
-    if (incomingChar == '\n') {
-      // Если в буфере что-то есть
-      if (bufferIndex > 0) {
-        inputBuffer[bufferIndex] = '\0'; // Завершаем строку
-        int val = atoi(inputBuffer);     // Преобразуем строку в число
-
-        // Проверяем, что число корректное
-        if (val >= 0 && val <= 99) {
-          // Атомарно передаем значение в ISR
-          cli();
-          user_value = val;
-          sei();
-        }
-      }
-      // Сбрасываем буфер для следующего ввода
-      bufferIndex = 0;
-    }
-    // Если это цифра и в буфере есть место (не более 2-х цифр)
-    else if (isDigit(incomingChar) && bufferIndex < 2) {
+    // Собираем в буфер только цифры и пока есть место
+    if (isDigit(incomingChar) && bufferIndex < 2) {
       inputBuffer[bufferIndex] = incomingChar;
       bufferIndex++;
+      lastCharTime = millis(); // Обновляем время получения символа
     }
-    // Если пришел некорректный символ или переполнение - просто сбрасываем буфер
-    else if (!isDigit(incomingChar) && incomingChar != '\r') {
-        bufferIndex = 0;
-    }
+  }
+
+  // Обработка по таймауту
+  // Если в буфере что-то есть (bufferIndex > 0)
+  // И если прошло достаточно времени с момента получения последнего символа
+  if (bufferIndex > 0 && (millis() - lastCharTime > timeout)) {
+    // Мы считаем, что ввод завершен
+    inputBuffer[bufferIndex] = '\0';   // Завершаем строку
+    int val = atoi(inputBuffer);       // Преобразуем в число
+
+    // Атомарно передаем значение в ISR
+    cli();
+    user_value = val;
+    sei();
+
+    // Сбрасываем индекс буфера, готовясь к следующему вводу
+    bufferIndex = 0;
   }
 }
