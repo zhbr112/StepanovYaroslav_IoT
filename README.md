@@ -25,3 +25,8 @@ _Степанов Ярослав_
 
 [README.md](./ShiftRegistrersTimers/README.md)
 [Папка ShiftRegistrersTimers](./ShiftRegistrersTimers/)
+
+## ButtonMatrix
+
+[README.md](./ButtonMatrix/README.md)
+[Папка ButtonMatrix](./ButtonMatrix/)
